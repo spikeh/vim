@@ -5,6 +5,34 @@ set nocompatible
 execute pathogen#infect()
 execute pathogen#helptags()
 
+"
+" NEW SHIT
+"
+scriptencoding utf-8
+" Use the clipboard register '+' instead of register '*' for all operations
+" except yank
+if has('unnamedplus')
+    set clipboard=unnamedplus
+endif
+
+set shortmess+=filmnrxoOtT
+
+set spell
+
+set splitright
+set splitbelow
+
+" Used to restore cursor to file position in previous editing session
+set viminfo='10,\"100,:20,%,n~/.viminfo
+
+"
+" DISABLED SHIT
+"
+"set whichwrap
+"set rulerformat
+"set scrolljump
+"set pastetoggle
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " GENERAL
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -61,7 +89,7 @@ set smarttab
 set shiftwidth=4
 
 " Number of spaces that a <Tab> counts for while performing editing operations
-set softtabstop=0
+set softtabstop=4
 
 " Number of spaces that a <Tab> in the file counts for
 set tabstop=4
@@ -82,6 +110,11 @@ set nowrap
 
 " Display tabs and trailing spaces visually
 "set list listchars=tab:\ \ ,trail:·
+set list
+set listchars=tab:›\ ,trail:•,extends:#,nbsp:.
+
+" Don't insert two spaces after a '.', '?' and '!' with a join command
+set nojoinspaces
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -91,12 +124,13 @@ set nowrap
 set foldmethod=indent
 
 set foldlevel=99
+set foldlevelstart=10
 
 " Maximum nesting of folds
-set foldnestmax=3
+set foldnestmax=10
 
-" Disable folds by default
-set nofoldenable
+" Enable folds by default
+set foldenable
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -204,10 +238,11 @@ if has("gui_running")
 endif
 
 " Highlight the screen line of the cursor
-"set cursorline
+set cursorline
 
 " Always show a status line
 set laststatus=2
+"set statusline
 
 " Number of screen lines to use for the command-line
 set cmdheight=1
@@ -226,13 +261,14 @@ set lazyredraw
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Make a backup before overwriting a file
 set backup
+set writebackup
 set backupcopy=auto
 " List of directories for the backup file
 set backupdir=~/.vim/backup,/tmp
 
 " Persistent undo
-set undodir=~/.vim/backup
 set undofile
+set undodir=~/.vim/backup
 
 " No swap file
 set noswapfile
@@ -242,22 +278,43 @@ set noswapfile
 " FUNCTIONS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
+function! ResCur()
+  if line("'\"") <= line("$")
+    normal! g`"
+    return 1
+  endif
+endfunction
+
+augroup resCur
+  autocmd!
+  autocmd BufWinEnter * call ResCur()
+augroup END
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CUSTOM BINDS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nmap <leader>w :w!<CR>
 
+nnoremap <space> za
+
+command W w !sudo tee % > /dev/null
+
 " Maps semi-colon to colon in all modes
 map ; :
 noremap ;; ;
 
 " Treat long lines as break lines
-"noremap j gj
-"noremap k gk
+noremap j gj
+noremap k gk
 
 " Map 0 to ^
 map 0 ^
+
+map zh zH
+map zl zL
+
+nnoremap Y y$
 
 " Easier way to move between windows
 noremap <C-h> <C-W>h
@@ -272,13 +329,30 @@ nnoremap bk  :bnext<CR>
 nnoremap bl  :blast<CR>
 nnoremap bd  :BD<CR>
 
-nnoremap <silent> <Leader>c :CommandT<CR>
-nnoremap <silent> <Leader>v :CommandTBuffer<CR>
+nnoremap gV `[v`]
 
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
 vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
 
+vnoremap < <gv
+vnoremap > >gv
+
+" Allow the repeat operator '.' to be used with a visual selection
+vnoremap . :normal .<CR>
+
 " Disable highlight
 map <silent> <leader>n :noh<CR>
+
+" Set all viewports to the same size
+map <leader>= <C-w>=
+
+map <leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
+
+map <leader>te :tabedit <C-R>=expand("%:p:h")<CR>/
+
+map <leader>cd :cd %:p:h<CR>:pwd<CR>
+
+map <leader>q :e ~/buffer<CR>
+map <leader>x :e ~/buffer.md<CR>
