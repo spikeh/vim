@@ -17,8 +17,6 @@ endif
 
 set shortmess+=filmnrxoOtT
 
-set spell
-
 set splitright
 set splitbelow
 
