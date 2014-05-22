@@ -214,7 +214,13 @@ filetype plugin indent on
 
 " Colour scheme and background
 colorscheme solarized
-set background=light
+
+" urxvt on ryuko seems to inverse light/dark background
+if &term == "rxvt-unicode-256color"
+    set background=dark
+else
+    set background=light
+endif
 
 " GNOME Terminal has support for 256 colours by default
 set t_Co=256
@@ -224,7 +230,7 @@ set noerrorbells
 set novisualbell
 
 if has("gui_running")
-	set background=light
+    set background=light
 
     " Add tab pages when indicated with showtabline. Use GUI tabs.
     set guioptions+=e
