@@ -1,150 +1,110 @@
-" Use Vim settings
 set nocompatible
 
-" Initialise Pathogen
-execute pathogen#infect()
-execute pathogen#helptags()
-
-"
-" NEW SHIT
-"
 scriptencoding utf-8
-" Use the clipboard register '+' instead of register '*' for all operations
-" except yank
-if has('unnamedplus')
-    set clipboard=unnamedplus
-endif
 
-set shortmess+=filmnrxoOtT
+execute pathogen#infect()
 
-set splitright
-set splitbelow
-
-" Used to restore cursor to file position in previous editing session
-set viminfo='10,\"100,:20,%,n~/.viminfo
-
-"
-" DISABLED SHIT
-"
-"set whichwrap
-"set rulerformat
-"set scrolljump
-"set pastetoggle
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" GENERAL
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Print the line number
 set number
 
-" Allow backspace in insert mode
 set backspace=indent,eol,start
 
-" Lines of :commands to store in history
 set history=1000
 
-" Show partial commands in the last line of the screen
+" Show (partial) command in the last line of the screen
 set showcmd
 
 " When a bracket is inserted, briefly jump to the matching one
 set showmatch
+set matchtime=3
 
-" Tenths of a second to show the matching paren
-set matchtime=2
-
-" Show current mode in the last line of the screen
+" If in Insert, Replace or Visual mode put a message on the last line
 set showmode
 
-" Disable cursor blink in all modes
-set gcr=a:blinkon0
+" Disable blinking cursor
+set guicursor=a:blinkon0
 
-" Automatically read the file if changed outside of Vim
+" Automatically read file again if changed outside of Vim
 set autoread
 
-" Buffers can exist in the background without being in a window
 set hidden
 
-" Set default encoding
 set encoding=utf8
 
-let mapleader = ","
-let g:mapleader = ","
+" Splitting a window will put the new window right/below the current one
+set splitright
+set splitbelow
 
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" INDENTATION
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Copy indent from current line when starting a new line
 set autoindent
 
-" Do smart autoindenting when starting a new line
+" Smart autoindenting when starting a new line
 set smartindent
+
+" Do not indent access specifiers for C++
+set cinoptions=g0
 
 " <Tab> in front of a line inserts blanks according to 'shiftwidth'
 set smarttab
 
-" Number of spaces to use for each step of (auto)indent
-set shiftwidth=4
+" Number of spaces that a <Tab> in the file counts for
+set tabstop=4
 
 " Number of spaces that a <Tab> counts for while performing editing operations
 set softtabstop=4
 
-" Number of spaces that a <Tab> in the file counts for
-set tabstop=4
+" Number of spaces to use for each step of (auto)indent
+set shiftwidth=4
 
 " Use appropriate number of spaces to insert a <Tab>
 set expandtab
 
-" Copy the structure of the existing lines indent when autoindenting a new
-" line
+" Copy the structure of the existing lines indent when autoindenting a new line
 set copyindent
 
-" When changing the indent of the current line, preserve as much of the indent
-" structure as possible
-set preserveindent
-
-" Don't wrap lines
 set nowrap
-
-" Display tabs and trailing spaces visually
-"set list listchars=tab:\ \ ,trail:·
-set list
-set listchars=tab:›\ ,trail:•,extends:#,nbsp:.
 
 " Don't insert two spaces after a '.', '?' and '!' with a join command
 set nojoinspaces
 
+" Minimum number of lines to keep above and below the cursor
+set scrolloff=5
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" FOLDING
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Line with equal indent form a fold
-set foldmethod=indent
+set colorcolumn=81
 
-set foldlevel=99
-set foldlevelstart=10
+" Show tabs as ^I is displayed, display $ after end of line
+set nolist
+set listchars=trail:·,tab:»·
 
-" Maximum nesting of folds
-set foldnestmax=10
+" On pressing 'wildchar' (usually <Tab>), possible matches are shown
+" Use ^N and ^P to move to the previous/next match
+set wildmenu
+
+" Completion mode that is used for the character specified with 'wildchar'
+" When more than one match, list all matches AND complete till longest string
+set wildmode=list:longest,full
+
+" Files that match with one of these patterns is ignored when completing
+set wildignore+=*.o,*.obj,*~
+set wildignore+=*.png,*.jpg,*.jpeg,*.gif
+set wildignore+=*.pyc
+set wildignore+=*.class
+
+" Use the clipboard register '+' instead of register '*' for all operations
+" except yank
+set clipboard=unnamedplus
+
+" Do not use a swapfile for the buffer
+set noswapfile
 
 " Enable folds by default
 set foldenable
 
+" Line with equal indent form a fold
+set foldmethod=indent
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" SCROLLING
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Minimum number of lines to keep above and below the cursor
-set scrolloff=5
+" Maximum nesting of folds
+set foldnestmax=10
 
-" Minimum number of lines to keep left and right of the cursor
-"set sidescrolloff=15
-"set sidescroll=1
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" SEARCH
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Show searched pattern as it is being typed
 set incsearch
 
@@ -157,77 +117,24 @@ set ignorecase
 " Override ignorecase if the search pattern contains upper case characters
 set smartcase
 
-" Changes the special characters that can be used in search patterns (regex)
-set magic
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" COMPLETION
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Completion mode that is used for the character specified with 'wildchar'
-" When more than one match, list all matches AND complete till longest string
-set wildmode=list:longest
-
-" On pressing 'wildchar' (usually <Tab>), possible matches are shown
-" Use ^N and ^P to move to the previous/next match
-set wildmenu
-
-" Things to ignore when completing
-set wildignore=*.o,*.obj,*~
-set wildignore+=*vim/backup*
-set wildignore+=*.png,*.jpg,*.jpeg,*.gif
-set wildignore+=*.pyc
-set wildignore+=*.class
-
-" Show a comma separated list of options for INsert mode completion
-set completeopt=longest,menu
-
-" When completing a word in insert mode from the tags file, show both the tag
-" name and a tidied up form of the search pattern as possible matches
-" Does NOT work well with having 'longest' in completeopt!
-set showfulltag
-
-" Specify how keyword completion works when ^P or ^N are used
-" . current buffer
-" w buffers from other windows
-" u unloaded buffers in the buffer list
-" U buffers not in the buffer list
-" t tag completion
-" i current and included files
-" d current and included files for defined name or macro
-set complete=.,w,b,u,U,t,i,d
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" UI
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Show the line and column number of the cursor position
 set ruler
 
-" Enable syntax highlighting
 syntax on
 
-" Font
-set guifont=Source\ Code\ Pro\ Medium\ 11
+" List of fonts which will be used for the GUI version of Vim
+set guifont=Terminess\ Powerline\ 12
 
-" Enable filetype plugins
 filetype plugin indent on
 
-" Colour scheme and background
 colorscheme solarized
 
-" urxvt on ryuko seems to inverse light/dark background
-if &term == "rxvt-unicode-256color"
-    set background=dark
-else
-    set background=light
-endif
+set background=light
 
-" GNOME Terminal has support for 256 colours by default
 set t_Co=256
 
-" Disable all bells
+" Do not ring the bell (beep or screen flash) for error messages
 set noerrorbells
-set novisualbell
 
 if has("gui_running")
     set background=light
@@ -244,95 +151,72 @@ endif
 " Highlight the screen line of the cursor
 set cursorline
 
-" Always show a status line
+" Always show the status line
 set laststatus=2
-"set statusline
 
-" Number of screen lines to use for the command-line
-set cmdheight=1
+" Shorten file messages
+set shortmess+=filmnrxoOtT
 
-" Control the behaviour when switching between buffers
-"set switchbuf=usetab
-
-" Screen will not redraw while executing macros
-set lazyredraw
-
-"set showtabline=0
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" BACKUP
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Make a backup before overwriting a file
-set backup
-set writebackup
-set backupcopy=auto
-" List of directories for the backup file
-set backupdir=~/.vim/backup,/tmp
-
-" Persistent undo
-set undofile
-set undodir=~/.vim/backup
-
-" No swap file
-set noswapfile
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" FUNCTIONS
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
-function! ResCur()
-  if line("'\"") <= line("$")
-    normal! g`"
-    return 1
-  endif
-endfunction
-
-augroup resCur
-  autocmd!
-  autocmd BufWinEnter * call ResCur()
-augroup END
-
+" Filetype indentations
+"
+autocmd Filetype cpp setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " CUSTOM BINDS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nmap <leader>w :w!<CR>
+let g:mapleader = ","
 
-nnoremap <space> za
+" Disable highlight
+nmap <silent> <leader>n :noh<CR>
 
-command W w !sudo tee % > /dev/null
+" Set all viewports to the same size
+map <leader>= <C-W>=
+
+" Toggle NERDTree
+nmap <silent> <leader>t :NERDTreeTabsToggle<CR>
+
+" Toggle Tagbar
+nmap <silent> <leader>b :TagbarToggle<CR>
+
+" Toggle Syntastic
+nmap <silent> <leader>e :SyntasticCheck<CR>
+
+" Toggle A
+nmap <silent> <leader>a :A<CR>
 
 " Maps semi-colon to colon in all modes
 map ; :
 noremap ;; ;
 
 " Treat long lines as break lines
-noremap j gj
-noremap k gk
+nnoremap j gj
+nnoremap k gk
 
-" Map 0 to ^
-map 0 ^
+nmap 0 ^
 
-map zh zH
-map zl zL
+nnoremap zh zH
+nnoremap zl zL
 
 nnoremap Y y$
 
+" Space toggles folding
+nnoremap <silent> <Space> za
+
 " Easier way to move between windows
-noremap <C-h> <C-W>h
-noremap <C-j> <C-W>j
-noremap <C-k> <C-W>k
-noremap <C-l> <C-W>l
+nnoremap <C-h> <C-W>h
+nnoremap <C-j> <C-W>j
+nnoremap <C-k> <C-W>k
+nnoremap <C-l> <C-W>l
 
 " Easier way to move between tabs
-nnoremap bh  :bfirst<CR>
-nnoremap bj  :bprev<CR>
-nnoremap bk  :bnext<CR>
-nnoremap bl  :blast<CR>
-nnoremap bd  :BD<CR>
+"nnoremap bh  :bfirst<CR>
+"nnoremap bj  :bprev<CR>
+"nnoremap bk  :bnext<CR>
+"nnoremap bl  :blast<CR>
+"nnoremap bd  :BD<CR>
 
+" Highlight everything
 nnoremap gV `[v`]
 
 " Visual mode pressing * or # searches for the current selection
@@ -340,23 +224,51 @@ nnoremap gV `[v`]
 vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
 
+" Adjust tabs in Visual mode
 vnoremap < <gv
 vnoremap > >gv
 
 " Allow the repeat operator '.' to be used with a visual selection
 vnoremap . :normal .<CR>
 
-" Disable highlight
-map <silent> <leader>n :noh<CR>
+" Force write readonly files using sudo
+command! WS w !sudo tee %
 
-" Set all viewports to the same size
-map <leader>= <C-w>=
+" NERDTree
+let g:nerdtree_tabs_open_on_gui_startup = 0
+let g:nerdtree_tabs_focus_on_files = 0
 
-map <leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
+" vim-airline
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
 
-map <leader>te :tabedit <C-R>=expand("%:p:h")<CR>/
+" Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
-map <leader>cd :cd %:p:h<CR>:pwd<CR>
+let g:syntastic_check_on_wq = 0
+let g:syntastic_error_symbol = '✘'
+let g:syntastic_warning_symbol = "▲"
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_loc_list_height = 5
 
-map <leader>q :e ~/buffer<CR>
-map <leader>x :e ~/buffer.md<CR>
+" vim-easytags
+set tags=./.tags;,~/.vim/tags
+let g:easytags_async = 1
+let g:easytags_file = '~/.vim/tags'
+let g:easytags_dynamic_files = 2
+let g:easytags_events = ['BufReadPost', 'BufWritePost']
+let g:easytags_resolve_links = 1
+let g:easytags_suppress_ctags_warning = 1
+
+" ctrlp
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
+
+" vim-gitgutter
+" Required after having changed the colorscheme
+hi clear SignColumn
+" In vim-airline, only display "hunks" if the diff is non-zero
+let g:airline#extensions#hunks#non_zero_only = 1
